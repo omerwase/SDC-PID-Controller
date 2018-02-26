@@ -81,18 +81,18 @@ int main()
           * another PID controller to control the speed!
           */
 					
-					// calcuate steer_value
-					pid.UpdateError(cte);
-					steer_value = pid.TotalError();
+	  // calcuate steer_value
+	  pid.UpdateError(cte);
+	  steer_value = pid.TotalError();
 					
-					// ensure steer_value is within [-1, 1]
-					if (steer_value > 1.0) steer_value = 1.0;
-					else if (steer_value < -1.0) steer_value = -1.0;
+	  // ensure steer_value is within [-1, 1]
+	  if (steer_value > 1.0) steer_value = 1.0;
+	  else if (steer_value < -1.0) steer_value = -1.0;
 					
-					// increase throttle in straight line (low steer_value)
-					// lower throttle during turns (high steer_value)
-					// a factor of 0.7 is used to minimize total throttle to keep car on track
-					throttle = (1.0 - fabs(steer_value)) * 0.7;
+	  // increase throttle in straight line (low steer_value)
+	  // lower throttle during turns (high steer_value)
+	  // a factor of 0.7 is used to minimize total throttle to keep car on track
+	  throttle = (1.0 - fabs(steer_value)) * 0.7;
 					
           // DEBUG
           std::cout << "CTE: " << cte << " Steering Value: " << steer_value << std::endl;
