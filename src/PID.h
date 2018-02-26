@@ -23,7 +23,7 @@ public:
   double Kd;
 
 	/*
-	*
+	* Values to calculate the integral (total_cte) and differential (previous_cte)
 	*/
 	double previous_cte;
 	double total_cte;
