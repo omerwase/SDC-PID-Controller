@@ -1,7 +1,17 @@
 # PID Controller for Udacity's Self Driving Car Simulator
 
 ## Summary
-Test
+This program implements a PID controller for a simulated car driving around the track. Cross Track Error (CTE) is calculated based on the car position away from the middle of the track. Udacity's SDC simulator provides the car's position and this program determines the steering angle using a PID controller.
+
+## Tuning Hyperparameters
+Hyperparameters for the proportional, integral, and differntial components (Kp, Ki, Kd) were tuned manually. Initial values were choosen as (0.1, 0.1, 0.1) and were individually modified by a factor of 10 to gauge their effects. Initially the car steered immediately off the track. Based on experimentation it was discovered that lowering Ki to 0.001 enabled the car to drive somewhat straight. However the car went off track during turns. Values for Kp and Kd were increased to 1.0. Doing so caused the car to wobble back and forth erradicaly. Kp was reduced back to 0.1 which mitigated this effect. Kd was increased to 3.0 and Ki was decreased to 0.0001. This produced good results and the car successfully completed the track. 
+
+The hyperparameters were fine tuned to mitigate wobble in the car's motion while responding sharlpy to turns (0.1, 0.0002, 4.0).
+
+## Hyperparameter Discussion
+Based on experimentation it was noticed that higher P and I components improve the car's performance during turns. However they make the car's motion unstable (sharply turning left and right). Specially the I component has a large impact on this effect. It makes intuitive sense since the I component is multipied by an integral (sum) of the CTE, thus producing large steering angles. For that reason the I component is kept small (0.0001 order of magnitude). 
+
+The D component has a smoothing effect 
 
 ## Dependencies
 
