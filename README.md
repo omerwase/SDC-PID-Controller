@@ -10,12 +10,12 @@ This program implements a PID controller for a simulated car driving around a tr
 
 Hyperparameters for the proportional, integral, and differential components (Kp, Ki, Kd) were tuned manually. Initial values of (0.1, 0.1, 0.1) were individually modified by a factor of 10 to gauge their effects. Initially the car steered immediately off the track. Based on experimentation it was discovered that lowering Ki to 0.001 enabled the car to drive somewhat straight. However the car went off track during turns. Values for Kp and Kd were increased to 1.0. Doing so caused the car to wobble back and forth erratically. Kp was reduced back to 0.1 which mitigated this effect. Kd was increased to 3.0 and Ki was decreased to 0.0001. This produced good results and the car successfully completed the track. 
 
-The hyperparameters were fine tuned to mitigate wobble in the car's motion while responding well to turns. Their final values are: (Kp = 0.1, Ki = 0.0002, Kd = 4.0).
+The hyperparameters were fine tuned to mitigate wobble in the car's motion while responding well to turns. Their final values are: (Kp = 0.1, Ki = 0.00025, Kd = 4.0).
   
   
 ## Hyperparameter Discussion
 
-Based on experimentation it was noticed that higher P and I components improved the controller's performance during turns. However they made the car's motion unstable (sharply turning left and right). Specially the I component had a large impact on this effect. It makes intuitive sense since the I component is multiplied by an integral (sum) of the CTE, thus producing large steering angles. For that reason the I component is kept small (0.0001 order of magnitude). 
+Based on experimentation it was noticed that higher P and I components improved the controller's performance during turns. However they made the car's motion unstable (sharply oscilating left and right). Specially the I component had a large impact on this effect. It makes intuitive sense since the I component is multiplied by an integral (sum) of the CTE, thus producing large steering angles. For that reason the I component is kept small (0.0001 order of magnitude).
 
 Conversely the D component is only effected by the rate of change in the CTE. If the CTE does not change (even if it has a large value) the D component will have little effect. However during period of change in the CTE the D component plays a significant role. As such it had a 'smoothing' effect and mitigated the wobble caused by higher P and I values. During experimentation it was noted that values for Kd as high as 10.0 kept the car's motion stable. However it was reduced to 4.0 to avoid erratic steering angles.
   
