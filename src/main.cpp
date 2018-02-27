@@ -1,12 +1,12 @@
 /* Udacity SDC Project 4: PID Controler
  * Submited by: Omer Waseem
- * Submitted on: Feb 26, 2018
+ * Submitted on: Feb 27, 2018
  */
 
 #include <uWS/uWS.h>
 #include <iostream>
 #include "json.hpp"
-#include "PID.h"
+#include "PID.hpp"
 #include <math.h>
 
 // for convenience
@@ -38,23 +38,6 @@ int main()
   uWS::Hub h;
 
   PID pid;
-  // TODO: Initialize the pid variable.
-	/* Notes:
-	* Kp: increasing makes the controler more responsive to sharp turns on the track
-	* Ki: decreasing this value mitigates unstable build up where car sharply goes back and forth
-	* Kd: increasing Kd makes the PID controler more stable
-	* In general better to have low K values, as long as the car turns sharply enough
-	* values that work:
-	* pid.Init(0.1, 0.0001, 2.0);
-	* pid.Init(0.1, 0.0001, 3.0);
-	* pid.Init(0.1, 0.0001, 10.0);
-	* pid.Init(0.2, 0.0001, 3.0);
-	* pid.Init(0.2, 0.0002, 4.0);
-	* pid.Init(0.1, 0.0002, 4.0); (best)
-	* pid.Init(0.1, 0.0003, 4.0);
-	* pid.Init(0.15, 0.0002, 4.0);
-	* pid.Init(0.15, 0.0002, 5.0);
-	*/
 	pid.Init(0.1, 0.0002, 4.0);
 	
   h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
@@ -70,36 +53,24 @@ int main()
         if (event == "telemetry") {
           // j[1] is the data JSON object
           double cte = std::stod(j[1]["cte"].get<std::string>());
-          double speed = std::stod(j[1]["speed"].get<std::string>());
-          double angle = std::stod(j[1]["steering_angle"].get<std::string>());
+          //double speed = std::stod(j[1]["speed"].get<std::string>());
+          //double angle = std::stod(j[1]["steering_angle"].get<std::string>());
           double steer_value;
-					double throttle;
-          /*
-          * TODO: Calcuate steering value here, remember the steering value is
-          * [-1, 1].
-          * NOTE: Feel free to play around with the throttle and speed. Maybe use
-          * another PID controller to control the speed!
-          */
 					
-	  // calcuate steer_value
-	  pid.UpdateError(cte);
-	  steer_value = pid.TotalError();
+					// calcuate steer_value
+					pid.UpdateError(cte);
+					steer_value = pid.TotalError();
 					
-	  // ensure steer_value is within [-1, 1]
-	  if (steer_value > 1.0) steer_value = 1.0;
-	  else if (steer_value < -1.0) steer_value = -1.0;
-					
-	  // increase throttle in straight line (low steer_value)
-	  // lower throttle during turns (high steer_value)
-	  // a factor of 0.7 is used to minimize total throttle to keep car on track
-	  throttle = (1.0 - fabs(steer_value)) * 0.7;
+					// ensure steer_value is within [-1, 1]
+					if (steer_value > 1.0) steer_value = 1.0;
+					else if (steer_value < -1.0) steer_value = -1.0;
 					
           // DEBUG
           std::cout << "CTE: " << cte << " Steering Value: " << steer_value << std::endl;
 
           json msgJson;
           msgJson["steering_angle"] = steer_value;
-          msgJson["throttle"] = throttle;
+          msgJson["throttle"] = 0.3;
           auto msg = "42[\"steer\"," + msgJson.dump() + "]";
           std::cout << msg << std::endl;
           ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);

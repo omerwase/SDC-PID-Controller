@@ -1,15 +1,11 @@
 /* Udacity SDC Project 4: PID Controler
  * Submited by: Omer Waseem
- * Submitted on: Feb 26, 2018
+ * Submitted on: Feb 27, 2018
 */
 
-#include "PID.h"
+#include "PID.hpp"
 
 using namespace std;
-
-/*
-* TODO: Complete the PID class.
-*/
 
 PID::PID() {}
 
